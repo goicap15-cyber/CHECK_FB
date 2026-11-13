@@ -1,0 +1,50 @@
+[
+ {
+  "file": "captcha_raw_1.png",
+  "x": 24,
+  "w": 63,
+  "h": 153
+ },
+ {
+  "file": "captcha_raw_1.png",
+  "x": 99,
+  "w": 135,
+  "h": 92
+ },
+ {
+  "file": "captcha_raw_2.png",
+  "x": 26,
+  "w": 89,
+  "h": 156
+ },
+ {
+  "file": "captcha_raw_2.png",
+  "x": 124,
+  "w": 87,
+  "h": 152
+ },
+ {
+  "file": "captcha_raw_2.png",
+  "x": 220,
+  "w": 85,
+  "h": 90
+ },
+ {
+  "file": "captcha_raw_3.png",
+  "x": 29,
+  "w": 88,
+  "h": 156
+ },
+ {
+  "file": "captcha_raw_3.png",
+  "x": 144,
+  "w": 38,
+  "h": 92
+ },
+ {
+  "file": "captcha_raw_3.png",
+  "x": 186,
+  "w": 102,
+  "h": 76
+ }
+]

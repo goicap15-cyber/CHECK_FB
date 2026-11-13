@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:"/>
+  <title>FB Cookie Checker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <!-- Custom Titlebar -->
+  <div class="titlebar" id="titlebar">
+    <div class="titlebar-left">
+      <div class="app-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z" fill="currentColor"/>
+        </svg>
+      </div>
+      <span class="app-title">FB Cookie Checker</span>
+      <span class="app-version">v1.0</span>
+    </div>
+    <div class="titlebar-drag"></div>
+    <div class="titlebar-controls">
+      <button class="win-btn" id="btn-min" title="Minimize">&#xE921;</button>
+      <button class="win-btn" id="btn-max" title="Maximize">&#xE922;</button>
+      <button class="win-btn close" id="btn-close" title="Close">&#xE8BB;</button>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <p class="sidebar-label">CHẾ ĐỘ HOẠT ĐỘNG</p>
+        <button class="sidebar-btn active" id="side-tab-checker">
+          <span class="btn-icon">🔍</span>
+          <span>Kiểm Tra Cookie</span>
+        </button>
+        <button class="sidebar-btn purple" id="side-tab-autoreg">
+          <span class="btn-icon">⚡</span>
+          <span>Auto Reg FB (TempMail)</span>
+        </button>
+        <button class="sidebar-btn" id="side-tab-regv2" style="background:linear-gradient(135deg,rgba(234,29,107,.15),rgba(99,102,241,.15))">
+          <span class="btn-icon">🚀</span>
+          <span>Auto Reg FB v2</span>
+        </button>
+        <button class="sidebar-btn orange" id="side-tab-accountbm">
+          <span class="btn-icon">🏢</span>
+          <span>Account BM</span>
+        </button>
+        <button class="sidebar-btn" id="side-tab-tiktok">
+          <span class="btn-icon">🎵</span>
+          <span>REG TIKTOK</span>
+        </button>
+        <button class="sidebar-btn green" id="side-tab-nuoi">
+          <span class="btn-icon">🌱</span>
+          <span>NUÔI FB</span>
+        </button>
+        <button class="sidebar-btn" id="side-tab-ckpt" style="color:#f85149">
+          <span class="btn-icon">🔓</span>
+          <span>GIẢI CHECKPOINT</span>
+        </button>
+        <button class="sidebar-btn" id="side-tab-profile" style="color:#58a6ff">
+          <span class="btn-icon">🖼️</span>
+          <span>THÊM AVATAR</span>
+        </button>
+        <button class="sidebar-btn" id="side-tab-auth">
+          <span class="btn-icon">🔑</span>
+          <span>Authentication</span>
+        </button>
+        <button class="sidebar-btn" id="side-tab-page">
+          <span class="btn-icon">📄</span>
+          <span>REG PAGE</span>
+        </button>
+        <button class="sidebar-btn" id="side-tab-tempmail">
+          <span class="btn-icon">📬</span>
+          <span>Temp Mail</span>
+        </button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="sidebar-section" id="sidebar-checker-import">
+        <p class="sidebar-label">IMPORT</p>
+        <button class="sidebar-btn" id="btn-folder">
+          <span class="btn-icon">📁</span>
+          <span>Chọn thư mục</span>
+        </button>
+        <button class="sidebar-btn" id="btn-zip">
+          <span class="btn-icon">🗜️</span>
+          <span>Chọn file ZIP</span>
+        </button>
+        <button class="sidebar-btn" id="btn-files">
+          <span class="btn-icon">📄</span>
+          <span>Chọn file cookie</span>
+        </button>
+        <button class="sidebar-btn" id="btn-paste">
+          <span class="btn-icon">📋</span>
+          <span>Dán cookie trực tiếp</span>
+        </button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">CÀI ĐẶT</p>
+        <div class="setting-item">
+          <label>Số Chrome mở cùng lúc</label>
+          <div class="slider-row">
+            <input type="range" id="concurrency" min="1" max="30" value="3"/>
+            <span class="slider-val" id="concurrency-val">3</span>
+          </div>
+        </div>
+        <div class="setting-item toggle-row">
+          <label class="checkbox-label" title="Mở các cửa sổ Chrome thật để xem trực tiếp quá trình đăng nhập Facebook">
+            <input type="checkbox" id="chk-show-browser" checked />
+            <span>🌐 Mở cửa sổ Chrome</span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <label>TempMail API Key</label>
+          <div class="slider-row" style="gap:6px">
+            <input type="text" id="setting-apikey" placeholder="tm_..." spellcheck="false" style="flex:1;min-width:0;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:7px 10px;font-size:12px" />
+            <button class="action-btn green" id="btn-save-apikey" style="padding:7px 12px;font-size:12px">💾 Lưu</button>
+          </div>
+        </div>
+        <div class="setting-item">
+          <label>TempMail.id.vn Token</label>
+          <div class="slider-row" style="gap:6px">
+            <input type="text" id="setting-tempmailidkey" placeholder="16252|..." spellcheck="false" style="flex:1;min-width:0;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:7px 10px;font-size:12px" />
+            <button class="action-btn green" id="btn-save-tempmailidkey" style="padding:7px 12px;font-size:12px">💾 Lưu</button>
+          </div>
+        </div>
+        <div class="setting-item">
+          <label>SMS API Key (SMSPVA)</label>
+          <div class="slider-row" style="gap:6px">
+            <input type="text" id="setting-smskey" placeholder="Key api.smspva.com" spellcheck="false" style="flex:1;min-width:0;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:7px 10px;font-size:12px" />
+            <button class="action-btn green" id="btn-save-smskey" style="padding:7px 12px;font-size:12px">💾 Lưu</button>
+          </div>
+        </div>
+        <div class="setting-item">
+          <label>TempMail G API Key</label>
+          <div class="slider-row" style="gap:6px">
+            <input type="text" id="setting-tempmailgkey" placeholder="0WPRnBWJ..." spellcheck="false" style="flex:1;min-width:0;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:7px 10px;font-size:12px" />
+            <button class="action-btn green" id="btn-save-tempmailgkey" style="padding:7px 12px;font-size:12px">💾 Lưu</button>
+          </div>
+        </div>
+        <div class="setting-item">
+          <label>Mail.td API Token (td_...)</label>
+          <div class="slider-row" style="gap:6px">
+            <input type="text" id="setting-mailtdkey" placeholder="td_..." spellcheck="false" style="flex:1;min-width:0;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:7px 10px;font-size:12px" />
+            <button class="action-btn green" id="btn-save-mailtdkey" style="padding:7px 12px;font-size:12px">💾 Lưu</button>
+          </div>
+        </div>
+        <div class="setting-item">
+          <label>Đường dẫn LDPlayer (mode Facebook Lite)</label>
+          <div class="slider-row" style="gap:6px">
+            <input type="text" id="setting-ldpath" placeholder="VD: D:\LDPlayer\LDPlayer14" spellcheck="false" style="flex:1;min-width:0;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:7px 10px;font-size:12px" />
+            <button class="action-btn green" id="btn-save-ldpath" style="padding:7px 12px;font-size:12px">💾 Lưu</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">EXPORT</p>
+        <button class="sidebar-btn green" id="btn-export-live" title="Xuất toàn bộ cookie Live ra thư mục, mỗi cookie 1 file .txt chuẩn Netscape">
+          <span class="btn-icon">✅</span>
+          <span>Live (Folder Netscape)</span>
+        </button>
+        <button class="sidebar-btn orange" id="btn-export-ckpt" title="Xuất toàn bộ cookie Checkpoint ra thư mục, mỗi cookie 1 file .txt chuẩn Netscape">
+          <span class="btn-icon">⚠️</span>
+          <span>Checkpoint (Folder Netscape)</span>
+        </button>
+        <button class="sidebar-btn yellow" id="btn-export-uid">
+          <span class="btn-icon">🆔</span>
+          <span>UID (Live)</span>
+        </button>
+        <button class="sidebar-btn blue" id="btn-export-all">
+          <span class="btn-icon">📋</span>
+          <span>Tất cả (TXT)</span>
+        </button>
+        <button class="sidebar-btn purple" id="btn-export-json">
+          <span class="btn-icon">📦</span>
+          <span>JSON</span>
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="speed-display">
+          <span id="speed-val">0</span> <small>cookies/s</small>
+        </div>
+        <div class="eta-display">ETA: <span id="eta-val">--</span></div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Navigation Tabs (đã ẩn — sidebar trái đã có đủ menu) -->
+      <div class="top-nav-tabs" style="display:none">
+        <button class="nav-tab active" id="tab-btn-checker">
+          <span class="tab-icon">🔍</span>
+          <span>Kiểm Tra Cookie</span>
+        </button>
+        <button class="nav-tab" id="tab-btn-autoreg">
+          <span class="tab-icon">⚡</span>
+          <span>Auto Reg Facebook (TempMail)</span>
+        </button>
+        <button class="nav-tab" id="tab-btn-accountbm">
+          <span class="tab-icon">🏢</span>
+          <span>Account BM</span>
+        </button>
+        <button class="nav-tab" id="tab-btn-tiktok">
+          <span class="tab-icon">🎵</span>
+          <span>REG TIKTOK</span>
+        </button>
+        <button class="nav-tab" id="tab-btn-nuoi">
+          <span class="tab-icon">🌱</span>
+          <span>NUÔI FB</span>
+        </button>
+        <button class="nav-tab" id="tab-btn-auth">
+          <span class="tab-icon">🔑</span>
+          <span>Authentication</span>
+        </button>
+      </div>
+
+      <!-- VIEW 1: COOKIE CHECKER -->
+      <div id="view-checker" class="app-view active">
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-card total">
+            <div class="stat-num" id="stat-total">0</div>
+            <div class="stat-label">TỔNG</div>
+          </div>
+          <div class="stat-card live">
+            <div class="stat-num" id="stat-live">0</div>
+            <div class="stat-label">LIVE ✓</div>
+          </div>
+          <div class="stat-card die">
+            <div class="stat-num" id="stat-die">0</div>
+            <div class="stat-label">DIE ✗</div>
+          </div>
+          <div class="stat-card checkpoint">
+            <div class="stat-num" id="stat-ckpt">0</div>
+            <div class="stat-label">CHECKPOINT ⚠</div>
+          </div>
+          <div class="stat-card error">
+            <div class="stat-num" id="stat-err">0</div>
+            <div class="stat-label">LỖI</div>
+          </div>
+        </div>
+
+        <!-- Drop Zone -->
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-inner" id="drop-inner">
+            <div class="drop-icon">🎯</div>
+            <div class="drop-title">Kéo thả thư mục, file ZIP hoặc file cookie vào đây</div>
+            <div class="drop-sub">hoặc dùng các nút bên trái để chọn file / dán cookie</div>
+            <div class="drop-badges">
+              <span class="badge">📁 Thư mục</span>
+              <span class="badge">🗜️ ZIP</span>
+              <span class="badge">📄 .TXT</span>
+              <span class="badge">📦 JSON</span>
+              <span class="badge">🌐 Netscape</span>
+              <span class="badge">🆔 UID|PASS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Queue Info -->
+        <div class="queue-bar" id="queue-bar" style="display:none">
+          <span id="queue-info">Đã nạp <b id="queue-count">0</b> cookie từ <b id="queue-files">0</b> file</span>
+          <div class="queue-actions">
+            <button class="action-btn start" id="btn-check">
+              <span>▶</span> Bắt đầu Check
+            </button>
+            <button class="action-btn stop" id="btn-stop" style="display:none">
+              <span>■</span> Dừng
+            </button>
+            <button class="action-btn clear" id="btn-clear">
+              <span>🗑</span> Xóa
+            </button>
+            <button class="action-btn orange" id="btn-open-chrome" title="Mở Chrome với tài khoản FB của các cookie đang tích">
+              <span>🌐</span> Mở Chrome
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-wrap" id="progress-wrap" style="display:none">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+            <div class="progress-glow" id="progress-glow"></div>
+          </div>
+          <div class="progress-text">
+            <span id="progress-label">Đang check...</span>
+            <span id="progress-pct">0%</span>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar" id="filter-bar" style="display:none">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">Tất cả</button>
+            <button class="filter-tab" data-filter="LIVE">Live</button>
+            <button class="filter-tab" data-filter="DIE">Die</button>
+            <button class="filter-tab" data-filter="CHECKPOINT">Checkpoint</button>
+            <button class="filter-tab" data-filter="ERROR">Lỗi</button>
+          </div>
+          <div class="filter-search">
+            <input type="text" id="search-input" placeholder="🔍 Tìm UID, tên, file..."/>
+          </div>
+          <div class="filter-bm-action">
+            <button class="action-btn orange" id="btn-send-to-bm" title="Tích tất cả cookie Live rồi chuyển sang Account BM">
+              <span>🏢</span> Gửi Live → BM
+            </button>
+          </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="table-wrap" id="table-wrap" style="display:none">
+          <table class="results-table" id="results-table">
+            <thead>
+              <tr>
+                <th style="width:36px;text-align:center"><input type="checkbox" id="chk-all" title="Chọn tất cả"/></th>
+                <th class="col-num">#</th>
+                <th class="col-status">Status</th>
+                <th class="col-uid">UID</th>
+                <th class="col-name">Tên</th>
+                <th class="col-file">File</th>
+                <th class="col-cookie">Cookie</th>
+                <th class="col-actions">Copy</th>
+              </tr>
+            </thead>
+            <tbody id="results-body">
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty placeholder when checking starts -->
+        <div class="checking-placeholder" id="checking-placeholder" style="display:none">
+          <div class="pulse-ring"></div>
+          <p>Đang check cookies...</p>
+        </div>
+      </div>
+
+      <!-- VIEW 2: AUTO REG FACEBOOK -->
+            <!-- ==================== VIEW AUTO REG FB v2 (GMAIL) ==================== -->
+      <div id="view-regv2" class="app-view" style="display:none">
+        <div class="stats-row">
+          <div class="stat-card total"><div class="stat-num" id="stat-regv2-total">0</div><div class="stat-label">ĐÃ CHẠY</div></div>
+          <div class="stat-card live"><div class="stat-num" id="stat-regv2-live">0</div><div class="stat-label">LIVE ✓</div></div>
+          <div class="stat-card warn"><div class="stat-num" id="stat-regv2-ckpt">0</div><div class="stat-label">CHECKPOINT (BỎ) ⚠</div></div>
+          <div class="stat-card error"><div class="stat-num" id="stat-regv2-err">0</div><div class="stat-label">LỖI ✗</div></div>
+        </div>
+
+        <div class="reg-control-card">
+          <div class="reg-form-grid">
+            <div class="reg-field">
+              <label>Cookie Gmail (nạp từ menu IMPORT bên trái)</label>
+              <div id="regv2-cookie-status" class="reg-input" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:#0d1117;border-radius:8px;min-height:20px">
+                <span id="regv2-cookie-count" style="font-weight:700;color:#3fb950">0</span>
+                <span style="font-size:12px;color:#9aa4b2">cookie Gmail đã nạp — mỗi cookie = 1 nick (dán cookie Gmail vào "Dán cookie trực tiếp" / file bên trái)</span>
+              </div>
+            </div>
+            <div class="reg-field">
+              <label>Biến thể địa chỉ</label>
+              <select id="regv2-variant" class="reg-input">
+                <option value="plus" selected>➕ Plus (goicap14+fb8xk2@gmail.com)</option>
+                <option value="dot">⚫ Dot (goi.cap.14@gmail.com)</option>
+                <option value="gmx">🌐 GoogleMail (…@googlemail.com)</option>
+                <option value="all">🔀 Luân phiên cả 3</option>
+              </select>
+            </div>
+            <div class="reg-field">
+              <label>Số nick cần reg</label>
+              <input type="number" id="regv2-count" class="reg-input" value="1" min="1" max="100"/>
+            </div>
+            <div class="reg-field">
+              <label>Số luồng song song</label>
+              <input type="number" id="regv2-concurrency" class="reg-input" value="1" min="1" max="50"/>
+            </div>
+            <div class="reg-field full-width">
+              <div class="proxy-label-row">
+                <label>Proxy (mỗi dòng 1 proxy hoặc 1 link API TMProxy) — để trống = chạy IP nhà</label>
+                <button id="btn-regv2-loadproxy" class="proxy-load-btn">📂 Nạp từ file .txt</button>
+              </div>
+              <textarea id="regv2-proxy" class="reg-input" rows="3" spellcheck="false" placeholder="Link API TMProxy: https://tmproxy.com/api/proxy/get-new-proxy?api_key=xxx — hoặc 1.2.3.4:8080 hoặc user:pass@1.2.3.4:8080"></textarea>
+            </div>
+          </div>
+          <div class="reg-actions-row">
+            <div class="reg-options">
+              <label class="checkbox-label"><input type="checkbox" id="regv2-show-browser" checked /><span>🌐 Hiện cửa sổ trình duyệt</span></label>
+            </div>
+            <div class="reg-buttons">
+              <button class="action-btn start" id="btn-regv2-start"><span>⚡</span> Bắt Đầu Reg v2</button>
+              <button class="action-btn start" id="btn-regv2-forever" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)" title="Luân phiên lại cookie khi hết — chạy đến khi bấm Dừng"><span>♾️</span> Reg Liên Tục</button>
+              <button class="action-btn stop" id="btn-regv2-stop" style="display:none"><span>■</span> Dừng</button>
+              <button class="action-btn green" id="btn-regv2-export"><span>💾</span> Xuất Nick Live</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="reg-results-card">
+          <div class="card-header-bar">
+            <span class="card-title">Danh Sách Tài Khoản Đã Tạo (Gmail)</span>
+            <span class="card-badge" id="regv2-live-badge">0 Live</span>
+          </div>
+          <div style="max-height:420px;overflow-y:auto">
+            <table class="results-table" id="regv2-results-table">
+              <thead><tr><th>#</th><th>Status</th><th>UID</th><th>Email / Tên</th><th>Mật khẩu</th><th>2FA</th><th>Proxy</th><th>Seeding</th><th>Thao tác</th></tr></thead>
+              <tbody id="regv2-results-body">
+                <tr class="empty-row"><td colspan="9" style="text-align:center;color:var(--text-muted);padding:30px">Chưa có tài khoản nào được tạo trong phiên này</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="reg-console-card">
+          <div class="console-header">
+            <div class="console-title"><span class="console-dot"></span><span>Nhật Ký Reg v2 (Gmail) Real-time</span></div>
+            <button class="console-clear-btn" id="btn-regv2-clear">Xóa log</button>
+          </div>
+          <div class="console-box" id="regv2-console-box" style="max-height:260px">
+            <div class="log-entry sys">[Hệ thống] Nạp COOKIE GMAIL qua menu IMPORT bên trái (mỗi cookie = 1 Gmail, dán cookie đăng nhập Gmail). Tool mở Gmail bằng cookie, tự đọc OTP từ inbox (chỉ nhận thư mới đúng nick) — xóa email gmail variant + thêm email mới + 2FA tự động.</div>
+          </div>
+        </div>
+      </div>
+
+<div id="view-autoreg" class="app-view" style="display:none">
+        <!-- Stats Row Reg -->
+        <div class="stats-row">
+          <div class="stat-card total">
+            <div class="stat-num" id="stat-reg-total">0</div>
+            <div class="stat-label">ĐÃ CHẠY</div>
+          </div>
+          <div class="stat-card live">
+            <div class="stat-num" id="stat-reg-live">0</div>
+            <div class="stat-label">LIVE ✓</div>
+          </div>
+          <div class="stat-card checkpoint">
+            <div class="stat-num" id="stat-reg-ckpt">0</div>
+            <div class="stat-label">CHECKPOINT (BỎ) ⚠</div>
+          </div>
+          <div class="stat-card error">
+            <div class="stat-num" id="stat-reg-err">0</div>
+            <div class="stat-label">LỖI ✗</div>
+          </div>
+        </div>
+
+        <!-- Reg Control Card -->
+        <div class="reg-control-card">
+          <div class="reg-form-grid">
+            <div class="reg-field">
+              <label>Nhận mã xác minh qua</label>
+              <select id="reg-mode-select" class="reg-input">
+                <option value="mailown" selected>📧 Mail Own — genblackmmoonline ✨ (Khuyên dùng)</option>
+                <option value="tempmailv2">📧 TempEmail.cc</option>
+                <option value="mailtd">📧 TempMail - mail.td</option>
+                <option value="tempmail">📧 TempMail - tempmailapi.io.vn</option>
+                <option value="customdomain">🌐 Domain Riêng (Cloudflare) ⭐ Trust cao nhất</option>
+                <option value="sms">📱 SMS (SMSPVA)</option>
+                <option value="ldplayer">🤖 LDPlayer (Facebook Lite)</option>
+              </select>
+            </div>
+            <div class="reg-field">
+              <label id="reg-domain-label">Domain TempMail</label>
+              <select id="reg-domain-select" class="reg-input">
+                <option value="">-- Tự động chọn domain tốt --</option>
+              </select>
+            </div>
+            <div class="reg-field">
+              <label>Số nick cần reg</label>
+              <input type="number" id="reg-count-input" class="reg-input" value="1" min="1" max="100"/>
+            </div>
+            <div class="reg-field">
+              <label>Reg bằng</label>
+              <select id="reg-via-select" class="reg-input">
+                <option value="web" selected>🌐 Web (www.facebook.com)</option>
+                <option value="mobile">📱 Mobile (m.facebook.com)</option>
+                <option value="both">🔀 Cả 2 (ngẫu nhiên mỗi nick)</option>
+              </select>
+            </div>
+            <div class="reg-field full-width">
+              <div class="proxy-label-row">
+                <label>Proxy (mỗi dòng 1 proxy: IP:Port | IP:Port:User:Pass | User:Pass@IP:Port | hoặc Link API)</label>
+                <button id="btn-reg-loadproxy" class="proxy-load-btn">📂 Nạp từ file .txt</button>
+              </div>
+              <textarea id="reg-proxy-input" class="reg-input" rows="4" spellcheck="false" placeholder="Mỗi dòng 1 proxy. Để trống nếu chạy trực tiếp mạng máy...&#10;1.2.3.4:8080&#10;user:pass@1.2.3.4:8080&#10;https://link-api-proxy?api_key=xxx (mỗi nick tự lấy proxy mới)"></textarea>
+            </div>
+          </div>
+
+          <div class="reg-actions-row">
+            <div class="reg-options">
+              <label class="checkbox-label" title="Mở cửa sổ Chrome để quan sát Facebook điền thông tin và OTP">
+                <input type="checkbox" id="reg-show-browser" checked />
+                <span>🌐 Hiện cửa sổ trình duyệt</span>
+              </label>
+            </div>
+            <div class="reg-buttons">
+              <button class="action-btn start" id="btn-reg-start">
+                <span>⚡</span> Bắt đầu Reg
+              </button>
+              <button class="action-btn start" id="btn-reg-forever" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)" title="Reg không giới hạn số lượng - chạy đến khi bấm Dừng">
+                <span>♾️</span> Reg Liên Tục
+              </button>
+              <button class="action-btn stop" id="btn-reg-stop" style="display:none">
+                <span>■</span> Dừng
+              </button>
+              <button class="action-btn test" id="btn-reg-testmail" title="Kiểm tra kết nối và tạo 1 email từ TempMailMMO">
+                <span>📧</span> Test Email
+              </button>
+              <button class="action-btn green" id="btn-reg-export">
+                <span>💾</span> Xuất Nick Live
+              </button>
+              <button class="action-btn" id="btn-reg-export-ckpt" style="background:linear-gradient(135deg,#da3633,#f0883e)" title="Xuất các nick reg ra CHECKPOINT (kèm 2FA + lý do + cookie) để xử lý lại sau">
+                <span>⚠️</span> Xuất Nick Checkpoint
+              </button>
+              <button class="action-btn clear" id="btn-reg-clear">
+                <span>🗑</span> Xóa bảng
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reg Workspace: Console Log & Live Results Table -->
+        <div class="reg-workspace">
+          <!-- Console Log Box -->
+          <div class="reg-console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <span class="console-dot"></span>
+                <span>Nhật Ký Tiến Trình Real-time</span>
+              </div>
+              <button class="console-clear-btn" id="btn-reg-clear-log">Xóa log</button>
+            </div>
+            <div class="console-box" id="reg-console-box">
+              <div class="log-entry sys">[Hệ thống] Đã sẵn sàng. Chọn domain và bấm "Bắt đầu Reg" để tự động tạo tài khoản Facebook.</div>
+            </div>
+          </div>
+
+          <!-- Table Results Reg -->
+          <div class="reg-results-card">
+            <div class="card-header-bar">
+              <span class="card-title">📋 Danh Sách Tài Khoản Đã Tạo</span>
+              <span class="card-badge" id="reg-live-badge">0 Live</span>
+            </div>
+            <div class="table-wrap-reg">
+              <table class="results-table" id="reg-results-table">
+                <thead>
+                  <tr>
+                    <th style="width:45px">#</th>
+                    <th style="width:110px">Status</th>
+                    <th style="width:140px">UID</th>
+                    <th>Email / Tên</th>
+                    <th style="width:130px">Mật khẩu</th>
+                    <th style="width:100px">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="reg-results-body">
+                  <tr class="empty-row"><td colspan="6" style="text-align:center;color:var(--text-muted);padding:30px">Chưa có tài khoản nào được tạo trong phiên này</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 3: ACCOUNT BM -->
+      <div id="view-accountbm" class="app-view" style="display:none">
+        <!-- Stats BM Row -->
+        <div class="stats-row">
+          <div class="stat-card total">
+            <div class="stat-num" id="stat-bm-total">0</div>
+            <div class="stat-label">TỔNG COOKIE</div>
+          </div>
+          <div class="stat-card live">
+            <div class="stat-num" id="stat-bm-success">0</div>
+            <div class="stat-label">TẠO BM ✓</div>
+          </div>
+          <div class="stat-card error">
+            <div class="stat-num" id="stat-bm-fail">0</div>
+            <div class="stat-label">THẤT BẠI ✗</div>
+          </div>
+          <div class="stat-card checkpoint">
+            <div class="stat-num" id="stat-bm-running">0</div>
+            <div class="stat-label">ĐANG CHẠY ⚙</div>
+          </div>
+        </div>
+
+        <!-- BM Control Card -->
+        <div class="reg-control-card">
+          <div class="bm-subtabs">
+            <button class="filter-tab active" id="bm-subtab-create">🏢 Tạo BM</button>
+            <button class="filter-tab" id="bm-subtab-adacc">👤 Tạo Account trong BM</button>
+          </div>
+
+          <div id="bm-panel-create">
+            <div class="reg-form-grid">
+              <div class="reg-field">
+                <label>Tên Business Manager</label>
+                <input type="text" id="bm-name-input" class="reg-input" placeholder="Ví dụ: My Business 2024" value="My Business"/>
+              </div>
+              <div class="reg-field">
+                <label>Email đăng ký BM</label>
+                <input type="email" id="bm-email-input" class="reg-input" placeholder="admin@yourdomain.com"/>
+              </div>
+              <div class="reg-field">
+                <label>Số BM mỗi cookie (1-5)</label>
+                <input type="number" id="bm-per-cookie" class="reg-input" value="1" min="1" max="5"/>
+              </div>
+              <div class="reg-field">
+                <label>Số Chrome chạy đồng thời</label>
+                <input type="number" id="bm-concurrency" class="reg-input" value="2" min="1" max="5"/>
+              </div>
+            </div>
+          </div>
+
+          <div id="bm-panel-adacc" style="display:none">
+            <div class="reg-form-grid">
+              <div class="reg-field">
+                <div class="proxy-label-row">
+                  <label>Business ID (BM)</label>
+                </div>
+                <input type="text" id="bm-acc-bmid" class="reg-input" placeholder="VD: 1423423093329121"/>
+              </div>
+              <div class="reg-field">
+                <label>Tên ad account</label>
+                <input type="text" id="bm-acc-name" class="reg-input" value="Ad Account"/>
+              </div>
+              <div class="reg-field">
+                <label>Múi giờ</label>
+                <select id="bm-acc-tz" class="reg-input">
+                  <optgroup label="GMT+7">
+                    <option value="Asia/Ho_Chi_Minh" selected>(GMT+07:00) Asia/Ho_Chi_Minh</option>
+                    <option value="Asia/Bangkok">(GMT+07:00) Asia/Bangkok</option>
+                    <option value="Asia/Jakarta">(GMT+07:00) Asia/Jakarta</option>
+                    <option value="Asia/Novosibirsk">(GMT+07:00) Asia/Novosibirsk</option>
+                  </optgroup>
+                  <optgroup label="Châu Á">
+                    <option value="Asia/Yangon">(GMT+06:30) Asia/Yangon</option>
+                    <option value="Asia/Dhaka">(GMT+06:00) Asia/Dhaka</option>
+                    <option value="Asia/Kathmandu">(GMT+05:45) Asia/Kathmandu</option>
+                    <option value="Asia/Kolkata">(GMT+05:30) Asia/Kolkata</option>
+                    <option value="Asia/Karachi">(GMT+05:00) Asia/Karachi</option>
+                    <option value="Asia/Tashkent">(GMT+05:00) Asia/Tashkent</option>
+                    <option value="Asia/Dubai">(GMT+04:00) Asia/Dubai</option>
+                    <option value="Asia/Baku">(GMT+04:00) Asia/Baku</option>
+                    <option value="Asia/Tehran">(GMT+03:30) Asia/Tehran</option>
+                    <option value="Asia/Riyadh">(GMT+03:00) Asia/Riyadh</option>
+                    <option value="Asia/Qatar">(GMT+03:00) Asia/Qatar</option>
+                    <option value="Asia/Kuwait">(GMT+03:00) Asia/Kuwait</option>
+                    <option value="Asia/Baghdad">(GMT+03:00) Asia/Baghdad</option>
+                    <option value="Europe/Istanbul">(GMT+03:00) Europe/Istanbul</option>
+                    <option value="Europe/Moscow">(GMT+03:00) Europe/Moscow</option>
+                    <option value="Asia/Jerusalem">(GMT+02:00) Asia/Jerusalem</option>
+                    <option value="Asia/Beirut">(GMT+02:00) Asia/Beirut</option>
+                    <option value="Asia/Kuala_Lumpur">(GMT+08:00) Asia/Kuala_Lumpur</option>
+                    <option value="Asia/Singapore">(GMT+08:00) Asia/Singapore</option>
+                    <option value="Asia/Manila">(GMT+08:00) Asia/Manila</option>
+                    <option value="Asia/Makassar">(GMT+08:00) Asia/Makassar</option>
+                    <option value="Asia/Shanghai">(GMT+08:00) Asia/Shanghai</option>
+                    <option value="Asia/Hong_Kong">(GMT+08:00) Asia/Hong_Kong</option>
+                    <option value="Asia/Taipei">(GMT+08:00) Asia/Taipei</option>
+                    <option value="Asia/Brunei">(GMT+08:00) Asia/Brunei</option>
+                    <option value="Asia/Tokyo">(GMT+09:00) Asia/Tokyo</option>
+                    <option value="Asia/Seoul">(GMT+09:00) Asia/Seoul</option>
+                    <option value="Asia/Vladivostok">(GMT+10:00) Asia/Vladivostok</option>
+                    <option value="Asia/Kamchatka">(GMT+12:00) Asia/Kamchatka</option>
+                  </optgroup>
+                  <optgroup label="Châu Âu">
+                    <option value="Europe/Kiev">(GMT+02:00) Europe/Kiev</option>
+                    <option value="Europe/Athens">(GMT+02:00) Europe/Athens</option>
+                    <option value="Europe/Bucharest">(GMT+02:00) Europe/Bucharest</option>
+                    <option value="Europe/Helsinki">(GMT+02:00) Europe/Helsinki</option>
+                    <option value="Europe/Warsaw">(GMT+01:00) Europe/Warsaw</option>
+                    <option value="Europe/Berlin">(GMT+01:00) Europe/Berlin</option>
+                    <option value="Europe/Paris">(GMT+01:00) Europe/Paris</option>
+                    <option value="Europe/Rome">(GMT+01:00) Europe/Rome</option>
+                    <option value="Europe/Madrid">(GMT+01:00) Europe/Madrid</option>
+                    <option value="Europe/Amsterdam">(GMT+01:00) Europe/Amsterdam</option>
+                    <option value="Europe/London">(GMT+00:00) Europe/London</option>
+                    <option value="Europe/Lisbon">(GMT+00:00) Europe/Lisbon</option>
+                    <option value="Atlantic/Reykjavik">(GMT+00:00) Atlantic/Reykjavik</option>
+                  </optgroup>
+                  <optgroup label="Châu Mỹ">
+                    <option value="America/Sao_Paulo">(GMT-03:00) America/Sao_Paulo</option>
+                    <option value="America/New_York">(GMT-05:00) America/New_York</option>
+                    <option value="America/Chicago">(GMT-06:00) America/Chicago</option>
+                    <option value="America/Denver">(GMT-07:00) America/Denver</option>
+                    <option value="America/Los_Angeles">(GMT-08:00) America/Los_Angeles</option>
+                    <option value="America/Anchorage">(GMT-09:00) America/Anchorage</option>
+                    <option value="Pacific/Honolulu">(GMT-10:00) Pacific/Honolulu</option>
+                  </optgroup>
+                  <optgroup label="Châu Úc / Thái Bình Dương">
+                    <option value="Australia/Perth">(GMT+08:00) Australia/Perth</option>
+                    <option value="Australia/Brisbane">(GMT+10:00) Australia/Brisbane</option>
+                    <option value="Australia/Sydney">(GMT+10:00) Australia/Sydney</option>
+                    <option value="Pacific/Guam">(GMT+10:00) Pacific/Guam</option>
+                    <option value="Pacific/Auckland">(GMT+12:00) Pacific/Auckland</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="reg-field">
+                <label>Tiền tệ</label>
+                <select id="bm-acc-currency" class="reg-input">
+                  <optgroup label="Phổ biến">
+                    <option value="USD" selected>USD — US Dollars</option>
+                    <option value="VND">VND — Vietnamese Dong</option>
+                    <option value="EUR">EUR — Euro</option>
+                    <option value="GBP">GBP — British Pound</option>
+                    <option value="JPY">JPY — Japanese Yen</option>
+                    <option value="CNY">CNY — Chinese Yuan</option>
+                    <option value="AUD">AUD — Australian Dollar</option>
+                    <option value="CAD">CAD — Canadian Dollar</option>
+                  </optgroup>
+                  <optgroup label="Châu Á">
+                    <option value="HKD">HKD — Hong Kong Dollar</option>
+                    <option value="TWD">TWD — Taiwan Dollar</option>
+                    <option value="KRW">KRW — South Korean Won</option>
+                    <option value="SGD">SGD — Singapore Dollar</option>
+                    <option value="MYR">MYR — Malaysian Ringgit</option>
+                    <option value="THB">THB — Thai Baht</option>
+                    <option value="IDR">IDR — Indonesian Rupiah</option>
+                    <option value="PHP">PHP — Philippine Peso</option>
+                    <option value="MMK">MMK — Myanmar Kyat</option>
+                    <option value="KHR">KHR — Cambodian Riel</option>
+                    <option value="LAK">LAK — Lao Kip</option>
+                    <option value="INR">INR — Indian Rupee</option>
+                    <option value="PKR">PKR — Pakistani Rupee</option>
+                    <option value="BDT">BDT — Bangladeshi Taka</option>
+                    <option value="AED">AED — UAE Dirham</option>
+                    <option value="SAR">SAR — Saudi Riyal</option>
+                    <option value="QAR">QAR — Qatari Riyal</option>
+                    <option value="KWD">KWD — Kuwaiti Dinar</option>
+                    <option value="ILS">ILS — Israeli New Shekel</option>
+                  </optgroup>
+                  <optgroup label="Khác">
+                    <option value="NZD">NZD — New Zealand Dollar</option>
+                    <option value="CHF">CHF — Swiss Franc</option>
+                    <option value="SEK">SEK — Swedish Krona</option>
+                    <option value="NOK">NOK — Norwegian Krone</option>
+                    <option value="DKK">DKK — Danish Krone</option>
+                    <option value="PLN">PLN — Polish Zloty</option>
+                    <option value="CZK">CZK — Czech Koruna</option>
+                    <option value="HUF">HUF — Hungarian Forint</option>
+                    <option value="RON">RON — Romanian Leu</option>
+                    <option value="TRY">TRY — Turkish Lira</option>
+                    <option value="RUB">RUB — Russian Ruble</option>
+                    <option value="UAH">UAH — Ukrainian Hryvnia</option>
+                    <option value="EGP">EGP — Egyptian Pound</option>
+                    <option value="NGN">NGN — Nigerian Naira</option>
+                    <option value="ZAR">ZAR — South African Rand</option>
+                    <option value="BRL">BRL — Brazilian Real</option>
+                    <option value="MXN">MXN — Mexican Peso</option>
+                    <option value="ARS">ARS — Argentine Peso</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="reg-form-grid" style="margin-top:10px">
+            <div class="reg-field full-width">
+              <div class="proxy-label-row">
+                <label>Proxy (tùy chọn)</label>
+              </div>
+              <input type="text" id="bm-proxy-input" class="reg-input" placeholder="Để trống nếu không dùng proxy: IP:Port hoặc user:pass@IP:Port"/>
+            </div>
+          </div>
+
+          <div class="reg-actions-row">
+            <div class="reg-options">
+              <label class="checkbox-label">
+                <input type="checkbox" id="bm-show-browser" checked />
+                <span>🌐 Hiện cửa sổ trình duyệt</span>
+              </label>
+            </div>
+            <div class="reg-buttons">
+              <button class="action-btn start" id="btn-bm-start">
+                <span>🏢</span> Bắt đầu tạo BM
+              </button>
+              <button class="action-btn start" id="btn-bm-acc-start" style="display:none">
+                <span>👤</span> Bắt đầu tạo Account
+              </button>
+              <button class="action-btn stop" id="btn-bm-stop" style="display:none">
+                <span>■</span> Dừng
+              </button>
+              <button class="action-btn green" id="btn-bm-export">
+                <span>💾</span> Xuất kết quả
+              </button>
+              <button class="action-btn clear" id="btn-bm-clear">
+                <span>🗑</span> Xóa tất cả
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BM Cookie List + Console -->
+        <div class="reg-workspace">
+          <!-- Cookie List for BM -->
+          <div class="reg-results-card" style="flex:1.2">
+            <div class="card-header-bar">
+              <span class="card-title">🍪 Danh Sách Cookie Live</span>
+              <span class="card-badge" id="bm-cookie-badge">0 cookie</span>
+            </div>
+            <div class="bm-cookie-actions">
+              <button class="filter-tab active" id="btn-bm-sel-all">Chọn tất cả</button>
+              <button class="filter-tab" id="btn-bm-sel-none">Bỏ chọn</button>
+              <button class="action-btn orange" id="btn-bm-paste-cookie" style="padding:4px 12px;font-size:12px">+ Dán thêm cookie</button>
+              <button class="action-btn green" id="btn-bm-invite" style="padding:4px 12px;font-size:12px">🔗 Tạo link mời</button>
+              <button class="action-btn" id="btn-bm-scan" style="padding:4px 12px;font-size:12px">🔍 Quét BM</button>
+            </div>
+            <div class="table-wrap-reg" style="max-height:320px">
+              <table class="results-table" id="bm-cookie-table">
+                <thead>
+                  <tr>
+                    <th style="width:36px"><input type="checkbox" id="bm-chk-all" title="Chọn tất cả"/></th>
+                    <th>#</th>
+                    <th>UID</th>
+                    <th>Tên</th>
+                    <th style="width:150px">ID BM</th>
+                    <th style="width:90px">Trạng thái BM</th>
+                  </tr>
+                </thead>
+                <tbody id="bm-cookie-body">
+                  <tr class="empty-row"><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">Chưa có cookie. Vào tab Kiểm Tra Cookie và dùng nút "Gửi Live → BM"</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- BM Console -->
+          <div class="reg-console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <span class="console-dot"></span>
+                <span>Nhật Ký Tạo BM Real-time</span>
+              </div>
+              <button class="console-clear-btn" id="btn-bm-clear-log">Xóa log</button>
+            </div>
+            <div class="console-box" id="bm-console-box">
+              <div class="log-entry sys">[Hệ thống] Sẵn sàng. Chuyển cookie Live sang đây từ tab Kiểm Tra Cookie rồi bấm "Bắt đầu tạo BM".</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 4: REG TIKTOK -->
+      <div id="view-tiktok" class="app-view" style="display:none">
+        <!-- Stats TikTok Row -->
+        <div class="stats-row">
+          <div class="stat-card total">
+            <div class="stat-num" id="stat-tt-total">0</div>
+            <div class="stat-label">TỔNG COOKIE</div>
+          </div>
+          <div class="stat-card live">
+            <div class="stat-num" id="stat-tt-success">0</div>
+            <div class="stat-label">TIKTOK OK ✓</div>
+          </div>
+          <div class="stat-card error">
+            <div class="stat-num" id="stat-tt-fail">0</div>
+            <div class="stat-label">THẤT BẠI ✗</div>
+          </div>
+          <div class="stat-card checkpoint">
+            <div class="stat-num" id="stat-tt-running">0</div>
+            <div class="stat-label">ĐANG CHẠY ⚙</div>
+          </div>
+        </div>
+
+        <!-- TikTok Control Card -->
+        <div class="reg-control-card">
+          <div class="reg-form-grid">
+            <div class="reg-field">
+              <label>Proxy (tùy chọn - tránh banned)</label>
+              <input type="text" id="tt-proxy-input" class="reg-input" placeholder="IP:Port hoặc user:pass@IP:Port - để trống nếu không dùng"/>
+            </div>
+            <div class="reg-field" style="grid-column:1/-1">
+              <label>Cookie Facebook (mỗi cookie 1 dòng, hoặc dán cả khối Netscape)</label>
+              <textarea id="tt-cookie-input" class="reg-input" rows="4" placeholder="datr=xxx; c_user=123; xs=xxx; ..."></textarea>
+            </div>
+          </div>
+          <div class="bm-cookie-actions">
+            <button class="action-btn green" id="btn-tt-import" style="padding:4px 12px;font-size:12px">📥 Nạp cookie</button>
+            <button class="filter-tab" id="btn-tt-sel-all">Chọn tất cả</button>
+            <button class="filter-tab" id="btn-tt-sel-none">Bỏ chọn</button>
+            <button class="action-btn orange" id="btn-tt-export" style="padding:4px 12px;font-size:12px">💾 Xuất cookie TikTok</button>
+          </div>
+          <div class="reg-actions-row">
+            <div class="reg-options">
+              <label class="checkbox-label">
+                <input type="checkbox" id="tt-show-browser" checked />
+                <span>🌐 Hiện cửa sổ trình duyệt</span>
+              </label>
+            </div>
+            <div class="reg-buttons">
+              <button class="action-btn start" id="btn-tt-start">
+                <span>🎵</span> Bắt đầu Reg TikTok
+              </button>
+              <button class="action-btn stop" id="btn-tt-stop" style="display:none">
+                <span>■</span> Dừng
+              </button>
+              <button class="action-btn clear" id="btn-tt-clear">
+                <span>🗑</span> Xóa tất cả
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TikTok Cookie List + Console -->
+        <div class="reg-workspace">
+          <div class="reg-results-card" style="flex:1.2">
+            <div class="card-header-bar">
+              <span class="card-title">🎵 Danh Sách Cookie</span>
+              <span class="card-badge" id="tt-cookie-badge">0 cookie</span>
+            </div>
+            <div class="table-wrap-reg" style="max-height:320px">
+              <table class="results-table" id="tt-cookie-table">
+                <thead>
+                  <tr>
+                    <th style="width:36px"><input type="checkbox" id="tt-chk-all" title="Chọn tất cả"/></th>
+                    <th>#</th>
+                    <th>UID FB</th>
+                    <th>Cookie TikTok</th>
+                    <th style="width:110px">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody id="tt-cookie-body">
+                  <tr class="empty-row"><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">Chưa có cookie. Dán cookie FB vào ô trên rồi bấm "Nạp cookie"</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TikTok Console -->
+          <div class="reg-console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <span class="console-dot"></span>
+                <span>Nhật Ký Reg TikTok</span>
+              </div>
+              <button class="console-clear-btn" id="btn-tt-clear-log">Xóa log</button>
+            </div>
+            <div class="console-box" id="tt-console-box">
+              <div class="log-entry sys">[Hệ thống] Sẵn sàng. Nạp cookie FB rồi bấm "Bắt đầu Reg TikTok".</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 5: NUÔI FB -->
+      <div id="view-nuoi" class="app-view" style="display:none">
+        <!-- Stats Nuôi Row -->
+        <div class="stats-row">
+          <div class="stat-card total">
+            <div class="stat-num" id="stat-nuoi-total">0</div>
+            <div class="stat-label">TỔNG</div>
+          </div>
+          <div class="stat-card live">
+            <div class="stat-num" id="stat-nuoi-live">0</div>
+            <div class="stat-label">LIVE ✓</div>
+          </div>
+          <div class="stat-card checkpoint">
+            <div class="stat-num" id="stat-nuoi-ckpt">0</div>
+            <div class="stat-label">CHECKPOINT ⚠</div>
+          </div>
+          <div class="stat-card error">
+            <div class="stat-num" id="stat-nuoi-err">0</div>
+            <div class="stat-label">LỖI ✗</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-nuoi-run">0</div>
+            <div class="stat-label">ĐANG NUÔI ⚙</div>
+          </div>
+        </div>
+
+        <!-- Nuôi Control Card -->
+        <div class="reg-control-card">
+          <div class="nuoi-import-bar">
+            <span class="nuoi-import-icon">📦</span>
+            <div class="nuoi-import-text">
+              <div class="nuoi-import-title">Đã nạp: <span id="nuoi-import-count">0</span> cookie</div>
+              <div class="nuoi-import-sub">Nạp bằng menu bên trái (Chọn thư mục / Chọn file ZIP / Chọn file cookie / Dán cookie trực tiếp) — hỗ trợ COOKIE hoặc UID|PASS|2FA|COOKIE, có cookie là nuôi được</div>
+            </div>
+          </div>
+          <div class="nuoi-opts-row">
+            <div class="reg-field nuoi-proxy-field">
+              <div class="proxy-label-row">
+                <label>Proxy (mỗi dòng 1 proxy: IP:Port | IP:Port:User:Pass | User:Pass@IP:Port | hoặc Link API) - để trống = chạy IP nhà</label>
+                <button id="btn-nuoi-loadproxy" class="proxy-load-btn">📂 Nạp từ file .txt</button>
+              </div>
+              <textarea id="nuoi-proxy-input" class="reg-input" rows="2" spellcheck="false" placeholder="Mỗi dòng 1 proxy, bỏ trống = nuôi bằng IP máy..."></textarea>
+            </div>
+            <div class="reg-field nuoi-num-field">
+              <label>Số phút nuôi/nick</label>
+              <input type="number" id="nuoi-minutes" class="reg-input" value="15" min="1" max="480"/>
+            </div>
+            <div class="reg-field nuoi-num-field">
+              <label>Số Chrome song song</label>
+              <input type="number" id="nuoi-concurrency" class="reg-input" value="1" min="1" max="50"/>
+            </div>
+          </div>
+
+          <div class="reg-actions-row">
+            <div class="reg-options">
+              <label class="checkbox-label" title="Mở cửa sổ Chrome để quan sát nick nuôi tương tác">
+                <input type="checkbox" id="nuoi-show-browser" checked />
+                <span>🌐 Hiện cửa sổ trình duyệt</span>
+              </label>
+            </div>
+            <div class="reg-buttons">
+              <button class="action-btn start" id="btn-nuoi-start">
+                <span>🌱</span> Bắt Đầu Nuôi
+              </button>
+              <button class="action-btn stop" id="btn-nuoi-stop" style="display:none">
+                <span>■</span> Dừng
+              </button>
+              <button class="action-btn green" id="btn-nuoi-export" title="Xuất nick Live ra file: uid|pass|2fa|cookie (cookie mới nhất sau nuôi)">
+                <span>💾</span> Xuất Nick Live
+              </button>
+              <button class="action-btn clear" id="btn-nuoi-clear">
+                <span>🗑</span> Xóa bảng
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nuôi Workspace: Hàng chờ từ Reg + Bảng kết quả + Console -->
+        <div class="reg-results-card" style="margin-bottom:12px">
+          <div class="card-header-bar">
+            <span class="card-title">📥 Hàng Chờ Nuôi (tự động từ Reg — mỗi via kèm proxy riêng)</span>
+            <span class="card-badge" id="nuoi-queue-badge">0 via</span>
+            <div style="margin-left:auto;display:flex;gap:8px">
+              <button class="console-clear-btn" id="btn-nuoi-queue-start" title="Chạy nuôi các via đang CHỜ ngay bây giờ">▶ Chạy hàng chờ</button>
+              <button class="console-clear-btn" id="btn-nuoi-queue-clear-done" title="Xóa các via đã nuôi xong">🧹 Xóa đã xong</button>
+              <button class="console-clear-btn" id="btn-nuoi-queue-clear" title="Xóa toàn bộ hàng chờ">🗑 Xóa hết</button>
+            </div>
+          </div>
+          <div class="table-wrap-reg" style="max-height:220px">
+            <table class="results-table" id="nuoi-queue-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>UID</th>
+                  <th>Email</th>
+                  <th>Proxy đã reg</th>
+                  <th style="width:110px">Trạng thái</th>
+                  <th>Ghi chú</th>
+                  <th style="width:70px">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="nuoi-queue-body">
+                <tr class="empty-row"><td colspan="7" style="text-align:center;color:var(--text-muted);padding:18px">Chưa có via nào được đẩy sang từ Auto Reg. Via LIVE sẽ tự động xuất hiện ở đây.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="reg-workspace">
+          <div class="reg-results-card" style="flex:1.2">
+            <div class="card-header-bar">
+              <span class="card-title">🌱 Kết Quả Nuôi</span>
+              <span class="card-badge" id="nuoi-badge">0 nick</span>
+            </div>
+            <div class="table-wrap-reg" style="max-height:320px">
+              <table class="results-table" id="nuoi-results-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>UID</th>
+                    <th style="width:110px">Trạng thái</th>
+                    <th style="width:60px">👍</th>
+                    <th style="width:60px">👥</th>
+                    <th style="width:60px">🏢</th>
+                    <th>Ghi chú</th>
+                  </tr>
+                </thead>
+                <tbody id="nuoi-results-body">
+                  <tr class="empty-row"><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px">Chưa có kết quả. Nạp cookie bằng menu bên trái rồi bấm "Bắt Đầu Nuôi".</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="reg-console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <span class="console-dot"></span>
+                <span>Nhật Ký Nuôi FB Real-time</span>
+              </div>
+              <button class="console-clear-btn" id="btn-nuoi-clear-log">Xóa log</button>
+            </div>
+            <div class="console-box" id="nuoi-console-box">
+              <div class="log-entry sys">[Hệ thống] Sẵn sàng. Nạp cookie bằng menu bên trái (có cookie là nuôi được, không cần tk/mk) rồi bấm "Bắt Đầu Nuôi". Cookie chết sẽ đăng nhập lại nếu dòng có tk|mk, cần 2FA sẽ tự sinh mã nếu có secret.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 5b: GIẢI CHECKPOINT -->
+      <div id="view-ckpt" class="app-view" style="display:none">
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-card total">
+            <div class="stat-num" id="stat-ckpt-total">0</div>
+            <div class="stat-label">TỔNG</div>
+          </div>
+          <div class="stat-card live">
+            <div class="stat-num" id="stat-ckpt-solved">0</div>
+            <div class="stat-label">ĐÃ GIẢI ✓</div>
+          </div>
+          <div class="stat-card checkpoint">
+            <div class="stat-num" id="stat-ckpt-fail">0</div>
+            <div class="stat-label">KHÔNG GIẢI ĐƯỢC ⚠</div>
+          </div>
+          <div class="stat-card error">
+            <div class="stat-num" id="stat-ckpt-err">0</div>
+            <div class="stat-label">LỖI ✗</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-ckpt-run">0</div>
+            <div class="stat-label">ĐANG GIẢI ⚙</div>
+          </div>
+        </div>
+
+        <!-- Control Card -->
+        <div class="reg-control-card">
+          <div class="nuoi-import-bar">
+            <span class="nuoi-import-icon">📦</span>
+            <div class="nuoi-import-text">
+              <div class="nuoi-import-title">Đã nạp: <span id="ckpt-import-count">0</span> cookie</div>
+              <div class="nuoi-import-sub">Nạp bằng menu bên trái — dòng dạng <b>uid|email|password|2FA|cookie</b> giải được qua OTP email; thiếu email thì chỉ giải được các bước không cần mã</div>
+            </div>
+          </div>
+          <div class="nuoi-opts-row">
+            <div class="reg-field nuoi-proxy-field">
+              <div class="proxy-label-row">
+                <label>Proxy (mỗi dòng 1 proxy: IP:Port | IP:Port:User:Pass | User:Pass@IP:Port | hoặc Link API TMProxy) - để trống = chạy IP nhà</label>
+                <button id="btn-ckpt-loadproxy" class="proxy-load-btn">📂 Nạp từ file .txt</button>
+              </div>
+              <textarea id="ckpt-proxy-input" class="reg-input" rows="2" spellcheck="false" placeholder="Mỗi dòng 1 proxy, bỏ trống = giải bằng IP máy..."></textarea>
+            </div>
+            <div class="reg-field nuoi-num-field">
+              <label>Số Chrome song song</label>
+              <input type="number" id="ckpt-concurrency" class="reg-input" value="1" min="1" max="50"/>
+            </div>
+          </div>
+          <div class="nuoi-opts-row">
+            <div class="reg-field" style="flex:1;min-width:100%">
+              <div class="proxy-label-row" style="flex-wrap:wrap;gap:6px">
+                <label style="flex:1;min-width:200px">Thư mục ảnh xác minh (FB hỏi "Tải hình ảnh lên" sẽ random 1 ảnh jpg/png)</label>
+                <button id="btn-ckpt-photodir" class="proxy-load-btn" style="flex-shrink:0">📂 Chọn thư mục ảnh</button>
+              </div>
+              <div id="ckpt-photodir-display" class="reg-input" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:#0d1117;border-radius:8px;min-height:20px;word-break:break-all">
+                <span id="ckpt-photodir-label" style="color:var(--text-muted);font-size:12px">Chưa chọn — nick gặp màn upload ảnh sẽ bỏ qua</span>
+              </div>
+            </div>
+          </div>
+          <div class="nuoi-opts-row">
+            <div class="reg-field" style="flex:1;min-width:100%">
+              <div class="proxy-label-row" style="flex-wrap:wrap;gap:6px">
+                <label style="flex:1;min-width:200px">🤖 AI đọc captcha (OpenRouter — model vision free khuyến nghị: nvidia/nemotron-3.5-super-vl:free)</label>
+                <label class="checkbox-label" style="flex-shrink:0" title="Tắt = chỉ dùng tesseract (kém chính xác hơn nhiều)">
+                  <input type="checkbox" id="ckpt-ai-enabled" checked />
+                  <span>Bật AI</span>
+                </label>
+                <button id="btn-ckpt-ai-save" class="proxy-load-btn" style="flex-shrink:0">💾 Lưu AI</button>
+                <button id="btn-ckpt-ai-usage" class="proxy-load-btn" style="flex-shrink:0">📊 Token/Key</button>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <input type="text" id="ckpt-ai-key" class="reg-input" style="flex:2;min-width:260px" placeholder="API key OpenRouter (sk-or-v1...)" spellcheck="false" autocomplete="off" />
+                <input type="text" id="ckpt-ai-model" class="reg-input" style="flex:1;min-width:230px" placeholder="Model (vd: nvidia/nemotron-3.5-super-vl:free)" spellcheck="false" autocomplete="off" />
+              </div>
+              <div id="ckpt-ai-usage-display" style="margin-top:6px;font-size:12px;color:var(--text-muted);word-break:break-all">Bấm 📊 Token/Key để xem credit/tốc độ dùng của key + số lần app đã gọi AI</div>
+            </div>
+          </div>
+
+          <div class="reg-actions-row">
+            <div class="reg-options">
+              <label class="checkbox-label" title="Mở cửa sổ Chrome để quan sát quá trình giải">
+                <input type="checkbox" id="ckpt-show-browser" checked />
+                <span>🌐 Hiện cửa sổ trình duyệt</span>
+              </label>
+            </div>
+            <div class="reg-buttons">
+              <button class="action-btn start" id="btn-ckpt-start" style="background:linear-gradient(135deg,#da3633,#f0883e)">
+                <span>🔓</span> Bắt Đầu Giải
+              </button>
+              <button class="action-btn stop" id="btn-ckpt-stop" style="display:none">
+                <span>■</span> Dừng
+              </button>
+              <button class="action-btn green" id="btn-ckpt-export" title="Xuất nick đã giải ra file: uid|email|pass|2FA|cookie (cookie mới sau giải)">
+                <span>💾</span> Xuất Nick Đã Giải
+              </button>
+              <button class="action-btn clear" id="btn-ckpt-clear">
+                <span>🗑</span> Xóa bảng
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workspace: Bảng kết quả + Console -->
+        <div class="reg-workspace">
+          <div class="reg-results-card" style="flex:1.2">
+            <div class="card-header-bar">
+              <span class="card-title">🔓 Kết Quả Giải Checkpoint</span>
+              <span class="card-badge" id="ckpt-badge">0 nick</span>
+            </div>
+            <div class="table-wrap-reg" style="max-height:320px">
+              <table class="results-table" id="ckpt-results-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>UID</th>
+                    <th style="width:130px">Trạng thái</th>
+                    <th>Ghi chú</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="ckpt-results-body">
+                  <tr class="empty-row"><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">Chưa có kết quả. Nạp cookie checkpoint bằng menu bên trái rồi bấm "Bắt Đầu Giải".</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="reg-console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <span class="console-dot"></span>
+                <span>Nhật Ký Giải Checkpoint Real-time</span>
+              </div>
+              <button class="console-clear-btn" id="btn-ckpt-clear-log">Xóa log</button>
+            </div>
+            <div class="console-box" id="ckpt-console-box">
+              <div class="log-entry sys">[Hệ thống] Sẵn sàng. Nạp cookie checkpoint (uid|email|pass|2FA|cookie) bằng menu bên trái rồi bấm "Bắt Đầu Giải". Nick hỏi mã email sẽ tự lấy OTP; hỏi 2FA sẽ tự sinh mã từ key trong dòng.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: THÊM AVATAR -->
+      <div id="view-profile" class="app-view" style="display:none">
+        <div class="stats-row">
+          <div class="stat-card total"><div class="stat-num" id="profile-stat-total">0</div><div class="stat-label">TỔNG</div></div>
+          <div class="stat-card live"><div class="stat-num" id="profile-stat-solved">0</div><div class="stat-label">HOÀN THÀNH ✓</div></div>
+          <div class="stat-card checkpoint"><div class="stat-num" id="profile-stat-fail">0</div><div class="stat-label">KHÔNG LÀM ĐƯỢC ⚠</div></div>
+          <div class="stat-card error"><div class="stat-num" id="profile-stat-err">0</div><div class="stat-label">LỖI ✗</div></div>
+          <div class="stat-card"><div class="stat-num" id="profile-stat-run">0</div><div class="stat-label">ĐANG LÀM ⟳</div></div>
+        </div>
+
+        <div class="reg-main-card">
+          <div class="reg-import-banner">
+            <span>📦</span>
+            <div>
+              <b>Đã nạp: <span id="profile-import-count">0</span> cookie</b>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Nạp bằng menu bên trái — dòng dạng <b>uid|email|password|2FA|cookie</b> (cần có UID để vào đúng trang profile). Ảnh đại diện lấy random từ thư mục ảnh bên dưới.</div>
+            </div>
+          </div>
+          <div class="nuoi-opts-row">
+            <div class="reg-field nuoi-proxy-field">
+              <div class="proxy-label-row">
+                <label>Proxy (mỗi dòng 1 proxy: IP:Port | IP:Port:User:Pass | User:Pass@IP:Port | hoặc Link API TMProxy) — để trống = chạy IP nhà</label>
+                <button id="btn-profile-loadproxy" class="proxy-load-btn">📂 Nạp từ file .txt</button>
+              </div>
+              <textarea id="profile-proxy-input" class="reg-input" rows="2" spellcheck="false" placeholder="Mỗi dòng 1 proxy, bỏ trống = chạy IP máy..."></textarea>
+            </div>
+            <div class="reg-field nuoi-num-field">
+              <label>Số Chrome song song</label>
+              <input type="number" id="profile-concurrency" class="reg-input" value="1" min="1" max="50"/>
+            </div>
+          </div>
+          <div class="nuoi-opts-row">
+            <div class="reg-field" style="flex:1;min-width:100%">
+              <div class="proxy-label-row" style="flex-wrap:wrap;gap:6px">
+                <label style="flex:1;min-width:200px">Thư mục ảnh đại diện (random 1 ảnh jpg/png cho mỗi nick)</label>
+                <button id="btn-profile-photodir" class="proxy-load-btn" style="flex-shrink:0">📂 Chọn thư mục ảnh</button>
+              </div>
+              <div id="profile-photodir-display" class="reg-input" style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:#0d1117;border-radius:8px;min-height:20px;word-break:break-all">
+                <span id="profile-photodir-label" style="color:var(--text-muted);font-size:12px">Chưa chọn — sẽ chỉ thêm Current city + Home town (không đặt avatar)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="reg-actions-row">
+            <div class="reg-options">
+              <label class="checkbox-label" title="Mở cửa sổ Chrome để quan sát">
+                <input type="checkbox" id="profile-show-browser" checked />
+                <span>🌐 Hiện cửa sổ trình duyệt</span>
+              </label>
+            </div>
+            <div class="reg-buttons">
+              <button class="action-btn start" id="btn-profile-start" style="background:linear-gradient(135deg,#1f6feb,#58a6ff)">
+                <span>🧑‍🎨</span> Bắt Đầu Thêm
+              </button>
+              <button class="action-btn stop" id="btn-profile-stop" style="display:none">
+                <span>■</span> Dừng
+              </button>
+              <button class="action-btn clear" id="btn-profile-clear">
+                <span>🗑</span> Xóa bảng
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="reg-workspace">
+          <div class="reg-results-card" style="flex:1.2">
+            <div class="card-header-bar">
+              <span class="card-title">🧑‍🎨 Kết Quả Thêm Profile</span>
+              <span class="card-badge" id="profile-badge">0 nick</span>
+            </div>
+            <div class="table-wrap-reg" style="max-height:320px">
+              <table class="results-table" id="profile-results-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>UID</th>
+                    <th style="width:130px">Trạng thái</th>
+                    <th>Ghi chú</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="profile-results-body">
+                  <tr class="empty-row"><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">Chưa có kết quả. Nạp cookie bằng menu bên trái rồi bấm "Bắt Đầu Thêm".</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="reg-console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <span class="console-dot"></span>
+                <span>Nhật Ký Thêm Avatar Real-time</span>
+              </div>
+              <button class="console-clear-btn" id="btn-profile-clear-log">Xóa log</button>
+            </div>
+            <div class="console-box" id="profile-console-box">
+              <div class="log-entry sys">[Hệ thống] Sẵn sàng. Flow: mở profile nick → bấm "What's on your mind?" → dán ảnh random từ thư mục ảnh (Ctrl+V) → bấm Post. Dán không ăn tự fallback qua nút Photo/video + nhét file.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 6: AUTHENTICATION -->
+      <div id="view-auth" class="app-view" style="display:none">
+        <!-- Stats Auth Row -->
+        <div class="stats-row">
+          <div class="stat-card total">
+            <div class="stat-num" id="stat-auth-total">0</div>
+            <div class="stat-label">TỔNG</div>
+          </div>
+          <div class="stat-card live">
+            <div class="stat-num" id="stat-auth-live">0</div>
+            <div class="stat-label">ĐỔI OK ✓</div>
+          </div>
+          <div class="stat-card checkpoint">
+            <div class="stat-num" id="stat-auth-ckpt">0</div>
+            <div class="stat-label">CHECKPOINT ⚠</div>
+          </div>
+          <div class="stat-card error">
+            <div class="stat-num" id="stat-auth-err">0</div>
+            <div class="stat-label">LỖI ✗</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="stat-auth-run">0</div>
+            <div class="stat-label">ĐANG CHẠY ⚙</div>
+          </div>
+        </div>
+
+        <!-- Auth Control Card -->
+        <div class="reg-control-card">
+          <div class="nuoi-import-bar">
+            <span class="nuoi-import-icon">📦</span>
+            <div class="nuoi-import-text">
+              <div class="nuoi-import-title">Đã nạp: <span id="auth-import-count">0</span> cookie</div>
+              <div class="nuoi-import-sub">Nạp bằng menu bên trái (Chọn thư mục / Chọn file ZIP / Chọn file cookie / Dán cookie trực tiếp) — mỗi cookie sẽ được mở phiên, thêm email temp mới + xác minh OTP + xóa SĐT cũ</div>
+            </div>
+          </div>
+          <div class="nuoi-opts-row">
+            <div class="reg-field nuoi-proxy-field">
+              <div class="proxy-label-row">
+                <label>Proxy (mỗi dòng 1 proxy: IP:Port | IP:Port:User:Pass | User:Pass@IP:Port | hoặc Link API) - để trống = chạy IP nhà</label>
+                <button id="btn-auth-loadproxy" class="proxy-load-btn">📂 Nạp từ file .txt</button>
+              </div>
+              <textarea id="auth-proxy-input" class="reg-input" rows="2" spellcheck="false" placeholder="Mỗi dòng 1 proxy, bỏ trống = chạy bằng IP máy..."></textarea>
+            </div>
+            <div class="reg-field nuoi-num-field">
+              <label>Nguồn email temp</label>
+              <select id="auth-email-provider" class="reg-input" title="Mail.td pro: tạo mailbox tính ops quota (1 op/mailbox), poll miễn phí; TempMail G free ~20 call/tháng — nên chạy 1 luồng">
+                <option value="mailtd">Mail.td (api.mail.td)</option>
+                <option value="tempmailg">TempMail G (v1.tempmailg.com)</option>
+                <option value="tempmailapi">TempMail API (io.vn)</option>
+                <option value="tempmailid">TempMail.id.vn</option>
+                <option value="mailtm">Mail.tm</option>
+              </select>
+            </div>
+            <div class="reg-field nuoi-num-field">
+              <label>Số luồng song song</label>
+              <input type="number" id="auth-concurrency" class="reg-input" value="1" min="1" max="50"/>
+            </div>
+          </div>
+
+          <div class="reg-actions-row">
+            <div class="reg-options">
+              <label class="checkbox-label" title="Mở cửa sổ trình duyệt để quan sát quá trình đổi thông tin">
+                <input type="checkbox" id="auth-show-browser" checked />
+                <span>🌐 Hiện cửa sổ trình duyệt</span>
+              </label>
+            </div>
+            <div class="reg-buttons">
+              <button class="action-btn start" id="btn-auth-start">
+                <span>🔑</span> Bắt Đầu Đổi Thông Tin
+              </button>
+              <button class="action-btn stop" id="btn-auth-stop" style="display:none">
+                <span>■</span> Dừng
+              </button>
+              <button class="action-btn green" id="btn-auth-export" title="Xuất nick đã đổi thông tin ra file: uid|pass|2fa|cookie (cookie mới nhất)">
+                <span>💾</span> Xuất Nick Đã Đổi
+              </button>
+              <button class="action-btn clear" id="btn-auth-clear">
+                <span>🗑</span> Xóa bảng
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auth Workspace: Bảng kết quả + Console -->
+        <div class="reg-workspace">
+          <div class="reg-results-card" style="flex:1.2">
+            <div class="card-header-bar">
+              <span class="card-title">🔑 Kết Quả Authentication</span>
+              <span class="card-badge" id="auth-badge">0 nick</span>
+            </div>
+            <div class="table-wrap-reg" style="max-height:320px">
+              <table class="results-table" id="auth-results-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>UID</th>
+                    <th style="width:110px">Trạng thái</th>
+                    <th>Email mới</th>
+                    <th>Key 2FA</th>
+                    <th style="width:70px">Xóa SĐT</th>
+                    <th>Ghi chú</th>
+                  </tr>
+                </thead>
+                <tbody id="auth-results-body">
+                  <tr class="empty-row"><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px">Chưa có kết quả. Nạp cookie bằng menu bên trái rồi bấm "Bắt Đầu Đổi Thông Tin".</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="reg-console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <span class="console-dot"></span>
+                <span>Nhật Ký Authentication Real-time</span>
+              </div>
+              <button class="console-clear-btn" id="btn-auth-clear-log">Xóa log</button>
+            </div>
+            <div class="console-box" id="auth-console-box">
+              <div class="log-entry sys">[Hệ thống] Sẵn sàng. Nạp cookie bằng menu bên trái rồi bấm "Bắt Đầu Đổi Thông Tin". Mỗi cookie LIVE sẽ được thêm email temp mới + xác minh OTP + bật 2FA (lấy OTP qua 2fa.page), key 2FA lưu lại để xuất.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ==================== VIEW REG PAGE ==================== -->
+      <div id="view-page" class="app-view" style="display:none">
+        <div style="display:flex;flex-direction:column;gap:14px">
+
+          <div class="reg-results-card" style="height:auto">
+            <div class="card-header-bar">
+              <span class="card-title">📄 REG PAGE — Tạo Page từ cookie</span>
+              <span class="card-badge" id="page-names-badge">0 tên từ file</span>
+            </div>
+            <div style="padding:12px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                <input type="text" id="page-name-input" placeholder="Nhập tên Page (dùng cho mọi cookie nếu không nạp file tên)..." spellcheck="false"
+                  style="flex:1;min-width:230px;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:8px 11px;font-size:12.5px" />
+                <button class="action-btn" id="btn-page-loadnames" style="padding:8px 14px;font-size:12.5px">📂 Nạp file tên (.txt)</button>
+                <input type="number" id="page-concurrency" style="background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:8px 9px;font-size:12.5px;width:70px" value="1" min="1" max="50"/>
+                <label style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--text-muted,#9aa4b2);cursor:pointer;white-space:nowrap">
+                  <input type="checkbox" id="page-show-browser" checked /> hiện cửa sổ
+                </label>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                <textarea id="page-proxy-input" rows="2" placeholder="PROXY mỗi dòng 1 IP:PORT | IP:PORT:USER:PASS (để trống = chạy IP nhà)" style="flex:1;min-width:260px;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:8px 11px;font-size:12px;resize:vertical"></textarea>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <button class="action-btn green" id="btn-page-start" style="padding:9px 18px;font-size:13px;font-weight:700">📄 Bắt Đầu Tạo Page</button>
+                  <button class="action-btn red" id="btn-page-stop" style="padding:9px 18px;font-size:13px;display:none">⏹ Dừng</button>
+                </div>
+              </div>
+              <div style="font-size:11.5px;color:var(--text-muted,#9aa4b2)">Mỗi cookie lấy 1 tên theo thứ tự trong file tên (hết tên → dùng tên nhập tay). Flow: điền tên → category "fan" ×3 → Create Page → Next → Next → Skip → Next → Done.</div>
+            </div>
+          </div>
+
+          <div class="reg-results-card" style="height:auto">
+            <div class="card-header-bar">
+              <span class="card-title">Kết Quả REG PAGE</span>
+              <span class="card-badge" id="page-badge">0 page</span>
+            </div>
+            <div style="max-height:calc(100vh - 340px);min-height:180px;overflow-y:auto">
+              <table class="results-table" id="page-results-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>UID cookie</th>
+                    <th style="width:110px">Trạng thái</th>
+                    <th>Tên Page</th>
+                    <th>Link Page</th>
+                    <th>Ghi chú</th>
+                  </tr>
+                </thead>
+                <tbody id="page-results-body">
+                  <tr class="empty-row"><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">Chưa có kết quả. Nạp cookie bằng menu bên trái rồi bấm "Bắt Đầu Tạo Page".</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="reg-console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <span class="console-dot"></span>
+                <span>Nhật Ký REG PAGE Real-time</span>
+              </div>
+              <button class="console-clear-btn" id="btn-page-clear-log">Xóa log</button>
+            </div>
+            <div class="console-box" id="page-console-box" style="max-height:240px">
+              <div class="log-entry sys">[Hệ thống] Sẵn sàng. Nạp cookie bằng menu bên trái, nạp file tên (mỗi dòng 1 tên) hoặc nhập tay rồi bấm "Bắt Đầu Tạo Page".</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ==================== VIEW TEMP MAIL ==================== -->
+      <div id="view-tempmail" class="app-view" style="display:none">
+        <div style="display:flex;flex-direction:column;gap:10px">
+
+          <!-- Thanh nhập mỏng 1 hàng -->
+          <div class="reg-results-card" style="height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+            <span style="font-size:13px;font-weight:700;white-space:nowrap;color:#e6e6e6">📬 Temp Mail</span>
+            <input type="text" id="tempmail-input" placeholder="Dán email temp (Mail.tm / TempMail.id: dán token hòm thư)..." spellcheck="false"
+              style="flex:1;min-width:230px;max-width:460px;background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:8px 11px;font-size:12.5px" />
+            <select id="tempmail-provider" style="background:#0d1117;border:1px solid #2a2f3a;border-radius:8px;color:#e6e6e6;padding:8px 9px;font-size:12.5px">
+              <option value="auto" selected>Tự động</option>
+              <option value="mailown">Mail Own (VPS)</option>
+                  <option value="tempmailv2">TempEmail.cc</option>
+                  <option value="tempmailapi">TempMailAPI</option>
+              <option value="mailtd">Mail.td</option>
+              <option value="mailtm">Mail.tm</option>
+              <option value="tempmailid">TempMail.id</option>
+              <option value="tempmailg">TempMailG</option>
+            </select>
+            <button class="action-btn green" id="btn-tempmail-fetch" style="padding:8px 14px;font-size:12.5px">📬 Lấy Thư</button>
+            <label style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--text-muted,#9aa4b2);cursor:pointer;white-space:nowrap">
+              <input type="checkbox" id="tempmail-autorefresh" /> tự làm mới 8s
+            </label>
+            <span id="tempmail-status" style="font-size:11.5px;color:var(--text-muted,#9aa4b2);white-space:nowrap">sẵn sàng</span>
+          </div>
+
+          <!-- Khối thư đến -->
+          <div class="reg-results-card" style="height:auto">
+            <div class="card-header-bar">
+              <span class="card-title">📨 Thư đến</span>
+              <span class="card-badge" id="tempmail-mail-count">0 thư</span>
+            </div>
+            <div id="tempmail-mails" style="padding:10px;max-height:calc(100vh - 210px);min-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px">
+              <div style="text-align:center;color:var(--text-muted,#9aa4b2);padding:24px;font-size:12.5px">Dán email vào ô trên rồi bấm "Lấy Thư" — dùng đúng key đã lưu trong Cài đặt của từng nguồn. Thư mới về hiện ở đây kèm mã OTP bấm-copy được.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal Dán Cookie -->
+  <div class="modal-overlay" id="modal-paste" style="display:none">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">📋 Dán danh sách cookie Facebook</div>
+        <button class="modal-close" id="btn-close-paste">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-tip">💡 Hỗ trợ mọi định dạng: Cookie chuỗi, UID|PASS|2FA|COOKIE, JSON Cookie-Editor, Netscape format...</p>
+        <textarea id="paste-input" class="paste-textarea" placeholder="Dán nội dung vào đây... Mỗi dòng 1 cookie hoặc 1 tài khoản"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="action-btn clear" id="btn-cancel-paste">Hủy</button>
+        <button class="action-btn start" id="btn-confirm-paste">⚡ Nạp cookie</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Kết quả Link mời -->
+  <div class="modal-overlay" id="modal-invite" style="display:none">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">🔗 Link mời vào BM</div>
+        <button class="modal-close" id="btn-close-invite">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-tip">💡 Dòng mới: ID BM | Email | Link mời. Copy gửi cho user để tự vào link chấp nhận lời mời.</p>
+        <textarea id="invite-output" class="paste-textarea" style="height:260px" readonly></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="action-btn clear" id="btn-export-invite">💾 Xuất file</button>
+        <button class="action-btn start" id="btn-copy-invite">📋 Copy tất cả</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

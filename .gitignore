@@ -1,0 +1,23 @@
+# Dependencies & Build
+node_modules/
+build/
+dist/
+
+# Logs & Debug output
+*.log
+app_boot_log2.txt
+reg_debug_log.txt
+
+# Secrets, Keys, Accounts & Cache
+.env
+*.key
+pass.txt
+mailtd_key.txt
+test_nuoi_acc.txt
+geoip_cache.json
+captcha_ai.json
+captcha_ai_usage.json
+
+# OS files
+.DS_Store
+Thumbs.db
